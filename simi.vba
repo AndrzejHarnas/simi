@@ -274,8 +274,8 @@ ReDim Wspolczynniki(ldim + 1)
 Worksheets("ukladyrownan").Activate
 Lzestaw = Range("A1").Value
 
-'    For i = 1 To Lzestaw
-    For i = 74 To 74
+    For i = 1 To Lzestaw
+'    For i = 74 To 74
      x = 1
      zestaw = Range("C1").Offset(i, 0).Value
         
@@ -360,6 +360,7 @@ Lzestaw = Range("A1").Value
       ActiveCell.Value = "wyznacznik="
       Range("H1").Offset(ldim + 3, 0).Select
       ActiveCell.FormulaR1C1 = "=MDETERM(R[-" & ldim + 1 & "]C:R[-" & ldim - 1 & "]C[" & ldim - 1 & "])"
+      wyzWart = Range("H1").Offset(ldim + 3, 0).Value
       Range("H1").Offset(ldim + 6, 0).Select
       ActiveCell.Value = "macierz odwrotna"
       Range("H1").Offset(ldim + 6, 4).Select
@@ -384,6 +385,7 @@ Lzestaw = Range("A1").Value
         Pi = Range("D1").Offset(0 + k, 0).Value
         ZestP = Range("D1").Offset(0 + k, 1).Value
         
+        If wyzWart <> 0 Then
         Worksheets("LiczbyKryterialne").Activate
         Range("A" & i + c).Value = "Qzest" & i
         Range("B" & i + c).Value = Pi
@@ -395,11 +397,72 @@ Lzestaw = Range("A1").Value
             x = Mid(ZestP, v, 1)
             Range("C" & i + c).Offset(0, v).Value = Wspolczynniki(v)
             
+                If Wspolczynniki(v) < 0 Then
+            
+                wyk = -Wspolczynniki(v)
+            
+                    If wyk <> 1 Then
+                    mianownik = mianownik & "(" & x & "^" & wyk & ")"
+                    Else
+                    mianownik = mianownik & "" & x
+                    End If
+            
+                End If
+                
+                If Wspolczynniki(v) > 0 Then
+                
+                    wyk = Wspolczynniki(v)
+            
+                    If wyk <> 1 Then
+                    licznik = licznik & "(" & x & "^" & wyk & ")"
+                    Else
+                    licznik = licznik & "" & x
+                    End If
+                
+                End If
+                
+                
             
             Next v
             
-             c = c + 1
-      
+            
+            Range("C" & i + c).Offset(0, v).Value = Wspolczynniki(v)
+            
+                        x = Mid(ZestP, v, 1)
+            Range("C" & i + c).Offset(0, v).Value = Wspolczynniki(v)
+            
+                If Wspolczynniki(v) < 0 Then
+            
+                wyk = -Wspolczynniki(v)
+            
+                    If wyk <> 1 Then
+                    mianownik = mianownik & "(" & x & "^" & wyk & ")"
+                    Else
+                    mianownik = mianownik & "" & x
+                    End If
+            
+                End If
+                
+                If Wspolczynniki(v) > 0 Then
+                
+                    wyk = Wspolczynniki(v)
+            
+                    If wyk <> 1 Then
+                    licznik = licznik & "(" & x & "^" & wyk & ")"
+                    Else
+                    licznik = licznik & "" & x
+                    End If
+                
+                End If
+            
+            
+            
+            Range("C" & i + c).Offset(0, v + 1).Value = licznik & "/" & mianownik
+            
+            c = c + 1
+            mianownik = ""
+            licznik = ""
+      End If
       Worksheets("ukladyrownan").Activate
         
   
